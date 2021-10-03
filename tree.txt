@@ -1,0 +1,16 @@
+.
+├── backend
+├── frontend
+│   ├── README.md
+│   ├── babel.config.js
+│   ├── dist
+│   ├── node_modules
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public
+│   ├── src
+│   └── vue.config.js
+├── run.py
+└── tree.txt
+
+6 directories, 7 files
