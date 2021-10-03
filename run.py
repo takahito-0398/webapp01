@@ -16,7 +16,8 @@ def index():
 
 @app.route('/about')
 def about():
-    return render_template('index.html')
+    # return render_template('index.html')
+    return render_template('index.html', name=name, age=age)
 
 
 @app.route('/chart')
