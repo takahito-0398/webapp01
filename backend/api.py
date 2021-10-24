@@ -1,6 +1,6 @@
 import pymysql.cursors
 from flask import Flask, request, jsonify, make_response
-# from flask_cors import CORS
+from flask_cors import CORS
 
 
 def conn_db(sql, conn_cfg):
@@ -19,9 +19,21 @@ def conn_db(sql, conn_cfg):
         return result
 
 
+conn_cfg = {
+    "host": "localhost",
+    "user": "iikali",
+    "password": "taka",
+    "db": "api01",
+    "charset": "utf8mb4",
+    "cursorclass": pymysql.cursors.DictCursor
+}
+sql = "SELECT * from sample1 order by score desc limit 3"
+response_dict = conn_db(sql, conn_cfg)
+
+
 ###########################
 app = Flask(__name__)
-# CORS(app)
+CORS(app)
 
 
 @app.route("/hoge", methods=['GET'])
@@ -31,7 +43,7 @@ def getHoge():
     response = {}
     if 'param' in params:
         response.setdefault('res', 'param is : ' + params.get('param'))
-    return make_response(jsonify(response))
+    return make_response(jsonify(response_dict))
 
 
 @app.route("/hoge", methods=['POST'])
@@ -41,21 +53,21 @@ def postHoge():
     response = {}
     if 'param' in params:
         response.setdefault('res', 'param is : ' + params.get('param'))
-    return make_response(jsonify(response))
+    return make_response(jsonify(response_dict))
 
 
 if __name__ == '__main__':
-    # app.run(host="127.0.0.1", port=5000)
-    conn_cfg = {
-        "host": "localhost",
-        "user": "iikali",
-        "password": "taka",
-        "db": "api01",
-        "charset": "utf8mb4",
-        "cursorclass": pymysql.cursors.DictCursor
-    }
-    sql = "SELECT * from sample1 order by score desc limit 3"
+    app.run(host="127.0.0.1", port=5000)
+    # conn_cfg = {
+    #     "host": "localhost",
+    #     "user": "iikali",
+    #     "password": "taka",
+    #     "db": "api01",
+    #     "charset": "utf8mb4",
+    #     "cursorclass": pymysql.cursors.DictCursor
+    # }
+    # sql = "SELECT * from sample1 order by score desc limit 3"
     # sql = "SELECT *, scoringDate from sample1 order by score desc limit 3"
 
-    res = conn_db(sql, conn_cfg)
-    print(res)
+    # res = conn_db(sql, conn_cfg)
+    # print(res)
