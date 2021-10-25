@@ -39,20 +39,20 @@ CORS(app)
 @app.route("/hoge", methods=['GET'])
 def getHoge():
     # URLパラメータ
-    params = request.args
-    response = {}
-    if 'param' in params:
-        response.setdefault('res', 'param is : ' + params.get('param'))
+    # params = request.args
+    # response = {}
+    # if 'param' in params:
+    #     response.setdefault('res', 'param is : ' + params.get('param'))
     return make_response(jsonify(response_dict))
 
 
 @app.route("/hoge", methods=['POST'])
 def postHoge():
     # ボディ(application/json)パラメータ
-    params = request.json
-    response = {}
-    if 'param' in params:
-        response.setdefault('res', 'param is : ' + params.get('param'))
+    # params = request.json
+    # response = {}
+    # if 'param' in params:
+    #     response.setdefault('res', 'param is : ' + params.get('param'))
     return make_response(jsonify(response_dict))
 
 
