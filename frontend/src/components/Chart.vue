@@ -1,43 +1,24 @@
 <script>
-import { Bar } from 'vue-chartjs';
+// import { Bar } from 'vue-chartjs';
+import axios from 'axios'
+import { HorizontalBar } from 'vue-chartjs';
 
 export default {
-  extends: Bar,
+  extends: HorizontalBar,
+  // extends: Bar,
   name: 'chart',
   data () {
     return {
       data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        // labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+        labels: [],
         datasets: [
           {
-            label: 'Bar Dataset',
-            data: [10, 20, 30, 40, 50, 30],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255, 99, 132, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-            ],
+            label: 'score',
+            data1: [10, 20, 30, 40, 50, 30],
+            data: [],
             borderWidth: 1
           },
-          {
-            label: 'Line Dataset',
-            data: [10, 50, 20, 30, 30, 40],
-            borderColor: '#CFD8DC',
-            fill: false,
-            type: 'line',
-            lineTension: 0.3,
-          }
         ]
       },
       options: {
@@ -45,18 +26,30 @@ export default {
           xAxes: [{
             scaleLabel: {
               display: true,
-              labelString: 'Month'
-            }
+              labelString: 'Score'
+            },
+          ticks: {
+            beginAtZero: true,
+            stepSize: 50,
+          }
           }],
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
-              stepSize: 10,
-            }
-          }]
         }
       }
     }
+  },
+  created(){
+    const req_url = 'http://127.0.0.1:5000/hoge';
+    axios.get(req_url)
+      .then((response) => {
+        response.data.forEach((ele) => {
+          // console.log(ele.score);
+          this.data.labels.push(ele.lastName + " " + ele.firstName);
+          this.data.datasets[0].data.push(ele.score)
+        });
+      })
+      .catch((e) => {
+        alert(e);
+      });
   },
   mounted () {
     this.renderChart(this.data, this.options)

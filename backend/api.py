@@ -3,17 +3,8 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 
 
-conn_cfg = {
-    "host": "localhost",
-    "user": "iikali",
-    "password": "taka",
-    "db": "idol",
-    "charset": "utf8mb4",
-    "cursorclass": pymysql.cursors.DictCursor
-}
-
-
-def conn_db(sql, conn_cfg=conn_cfg):
+def conn_db(sql, conn_cfg):
+    # conn = pymysql.connect(**conn_cfg)
     conn = pymysql.connect(**conn_cfg)
     try:
         with conn.cursor() as cursor:
@@ -28,6 +19,18 @@ def conn_db(sql, conn_cfg=conn_cfg):
         return result
 
 
+conn_cfg = {
+    "host": "localhost",
+    "user": "iikali",
+    "password": "taka",
+    "db": "api01",
+    "charset": "utf8mb4",
+    "cursorclass": pymysql.cursors.DictCursor
+}
+sql = "SELECT * from sample1 order by score desc limit 3"
+response_dict = conn_db(sql, conn_cfg)
+
+
 ###########################
 app = Flask(__name__)
 CORS(app)
@@ -36,26 +39,35 @@ CORS(app)
 @app.route("/hoge", methods=['GET'])
 def getHoge():
     # URLパラメータ
-    params = request.args
-    response = {}
-    if 'param' in params:
-        response.setdefault('res', 'param is : ' + params.get('param'))
-    return make_response(jsonify(response))
+    # params = request.args
+    # response = {}
+    # if 'param' in params:
+    #     response.setdefault('res', 'param is : ' + params.get('param'))
+    return make_response(jsonify(response_dict))
 
 
 @app.route("/hoge", methods=['POST'])
 def postHoge():
     # ボディ(application/json)パラメータ
-    params = request.json
-    response = {}
-    if 'param' in params:
-        response.setdefault('res', 'param is : ' + params.get('param'))
-    return make_response(jsonify(response))
+    # params = request.json
+    # response = {}
+    # if 'param' in params:
+    #     response.setdefault('res', 'param is : ' + params.get('param'))
+    return make_response(jsonify(response_dict))
 
 
 if __name__ == '__main__':
-    # app.run(host="127.0.0.1", port=5000)
-    sql = "select family_name, last_name, birthplace from idol_tb limit 1"
+    app.run(host="127.0.0.1", port=5000)
+    # conn_cfg = {
+    #     "host": "localhost",
+    #     "user": "iikali",
+    #     "password": "taka",
+    #     "db": "api01",
+    #     "charset": "utf8mb4",
+    #     "cursorclass": pymysql.cursors.DictCursor
+    # }
+    # sql = "SELECT * from sample1 order by score desc limit 3"
+    # sql = "SELECT *, scoringDate from sample1 order by score desc limit 3"
 
-    res = conn_db(sql)
-    print(res)
+    # res = conn_db(sql, conn_cfg)
+    # print(res)
