@@ -9,6 +9,8 @@ export default {
   name: 'chart',
   data () {
     return {
+      // height: window.innerHeight / 4,
+      // width: window.innerWidth / 4,
       data: {
         // labels: ['January', 'February', 'March', 'April', 'May', 'June'],
         labels: [],
